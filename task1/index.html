@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming Languages and Students</title>
+    <style>
+        #content {
+            background-color: yellow;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <a href="#" onclick="loadData('languages')">Мови</a> |
+        <a href="#" onclick="loadData('students')">Студенти</a>
+    </div>
+    <div id="content"></div>
+
+    <script>
+        function loadData(type) {
+            const contentDiv = document.getElementById('content');
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    displayData(data);
+                }
+            };
+
+            if (type === 'languages') {
+                xhr.open('GET', '1.txt', true);
+            } else if (type === 'students') {
+                xhr.open('GET', '2.txt', true);
+            }
+
+            xhr.send();
+        }
+
+        function displayData(data) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '<strong>' + (data.length > 0 ? 'Перелік:' : 'Дані відсутні') + '</strong><br>';
+
+            if (data.length > 0) {
+                contentDiv.innerHTML += '<ul>';
+                data.forEach(item => {
+                    contentDiv.innerHTML += '<li>' + item + '</li>';
+                });
+                contentDiv.innerHTML += '</ul>';
+            }
+        }
+    </script>
+</body>
+</html>
